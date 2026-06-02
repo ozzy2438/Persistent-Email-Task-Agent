@@ -53,9 +53,21 @@ class TaskItem(BaseModel):
     id: str
     title: str
     source: str
+    source_email_id: str | None = None
     deadline: str | None = None
     status: TaskStatus = TaskStatus.OPEN
     notes: list[str] = Field(default_factory=list)
+
+
+class EmailItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    sender: str
+    subject: str
+    body: str
+    received_at: str | None = None
+    metadata: dict[str, str] = Field(default_factory=dict)
 
 
 class StepTrace(BaseModel):

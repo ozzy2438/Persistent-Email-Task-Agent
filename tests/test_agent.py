@@ -81,3 +81,14 @@ def test_agent_rejects_invalid_task_reference_before_accepting_final_answer() ->
     assert trace.final_response == "The Acme proposal is still open."
     assert trace.steps[-1].repair_attempts == 1
     assert trace.steps[-1].parsed_step.final_answer.referenced_tasks == [task_id]
+
+
+def test_build_agent_registers_local_email_tools() -> None:
+    agent = build_agent()
+
+    catalog = agent.tools.catalog_text()
+
+    assert "read_emails(query, limit)" in catalog
+    assert "summarize_thread(query, limit)" in catalog
+    assert "draft_reply(query, recipient, guidance)" in catalog
+    assert agent.memory.list_emails(limit=1) == []

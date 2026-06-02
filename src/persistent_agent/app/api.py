@@ -17,6 +17,7 @@ class EmailRequest(BaseModel):
     sender: str
     subject: str
     body: str
+    received_at: str | None = None
     task_title: str | None = None
     deadline: str | None = None
 
@@ -44,18 +45,33 @@ def tasks(request: Request) -> list[dict]:
 @app.post("/emails")
 def ingest_email(payload: EmailRequest, request: Request) -> dict:
     memory = request.app.state.agent.memory
+    email = memory.save_email(
+        sender=payload.sender,
+        subject=payload.subject,
+        body=payload.body,
+        received_at=payload.received_at,
+        metadata={"sender": payload.sender, "subject": payload.subject},
+    )
     memory_id = memory.remember(
         f"Email from {payload.sender}. Subject: {payload.subject}. Body: {payload.body}",
-        {"type": "email", "sender": payload.sender, "subject": payload.subject},
+        {"type": "email", "email_id": email.id, "sender": payload.sender, "subject": payload.subject},
     )
     task = None
     if payload.task_title:
-        task = memory.save_task(payload.task_title, payload.subject, payload.deadline)
-    return {"memory_id": memory_id, "task": task.model_dump(mode="json") if task else None}
+        task = memory.save_task(
+            payload.task_title,
+            payload.subject,
+            payload.deadline,
+            source_email_id=email.id,
+        )
+    return {
+        "email": email.model_dump(mode="json"),
+        "memory_id": memory_id,
+        "task": task.model_dump(mode="json") if task else None,
+    }
 
 
 @app.post("/chat")
 def chat(payload: ChatRequest, request: Request) -> dict:
     trace = request.app.state.agent.run(payload.message)
     return trace.model_dump(mode="json")
-

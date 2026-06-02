@@ -35,6 +35,11 @@ persistent-agent demo
 
 The default `demo` backend is deterministic and needs no API key or GPU.
 
+The agent's local tool registry is also deterministic. In addition to task and
+memory lookup, it exposes draft-only email helpers over a typed local SQLite
+email store: `read_emails`, `summarize_thread`, and `draft_reply`. These tools
+do not send mail, require no OAuth, and do not expand the API surface.
+
 ## Run the Evals
 
 ```bash

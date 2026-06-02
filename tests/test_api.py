@@ -20,6 +20,9 @@ def test_api_ingests_email_and_lists_task(tmp_path: Path, monkeypatch) -> None:
             },
         )
         assert response.status_code == 200
+        payload = response.json()
+        assert payload["email"]["subject"] == "Acme proposal"
+        assert payload["task"]["source_email_id"] == payload["email"]["id"]
         tasks = client.get("/tasks").json()
         assert tasks[0]["deadline"] == "Friday"
-
+        assert tasks[0]["source_email_id"] == payload["email"]["id"]
