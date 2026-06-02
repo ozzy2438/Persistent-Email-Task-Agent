@@ -1,0 +1,11 @@
+.env
+.pytest_cache/
+.ruff_cache/
+.venv/
+__pycache__/
+*.egg-info/
+*.py[cod]
+*.db
+eval/reports/*.md
+qdrant_data/
+
