@@ -1,0 +1,13 @@
+id: carry_forward_vague_reference
+category: tool_selection
+seed: acme
+input: "Can you remind me about the Acme item?"
+expectations:
+  must_call_tools:
+    - list_open_tasks
+    - search_memory
+  response_must_mention:
+    - manager
+    - Tuesday
+  max_latency_ms: 100
+

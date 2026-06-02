@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from persistent_agent.agent.loop import Agent
 from persistent_agent.memory.store import MemoryStore
-from persistent_agent.models.client import DemoModelClient
+from persistent_agent.models.factory import build_model_client
 from persistent_agent.tools.base import ToolRegistry
 from persistent_agent.tools.memory_tools import ListOpenTasks, SearchMemory
 
@@ -17,7 +17,7 @@ def build_agent(model_client=None, db_path: str = ":memory:") -> Agent:
     tools.register(ListOpenTasks())
     tools.register(SearchMemory())
     return Agent(
-        model_client=model_client or DemoModelClient(),
+        model_client=model_client or build_model_client(),
         tools=tools,
         memory=MemoryStore(db_path),
         system_prompt=SYSTEM_PROMPT,
@@ -34,4 +34,3 @@ def seed_acme_scenario(agent: Agent) -> None:
         source="manager@company.com / Acme proposal",
         deadline="Friday",
     )
-

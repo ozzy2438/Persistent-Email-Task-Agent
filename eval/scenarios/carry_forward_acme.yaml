@@ -1,0 +1,13 @@
+id: carry_forward_acme
+category: memory_carry_forward
+seed: acme
+input: "Where did that Acme thing land?"
+expectations:
+  must_call_tools:
+    - list_open_tasks
+    - search_memory
+  response_must_mention:
+    - Acme
+    - Friday
+  max_latency_ms: 100
+

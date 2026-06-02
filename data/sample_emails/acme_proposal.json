@@ -1,0 +1,8 @@
+{
+  "sender": "manager@company.com",
+  "subject": "Acme proposal",
+  "body": "Please send the Acme proposal by Friday.",
+  "task_title": "Prepare and send the Acme proposal",
+  "deadline": "Friday"
+}
+
