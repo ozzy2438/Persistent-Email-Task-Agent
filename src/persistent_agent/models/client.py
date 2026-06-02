@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -68,9 +69,8 @@ class DemoModelClient(ModelClient):
 
     @staticmethod
     def _extract_task_id(tool_result: str) -> str | None:
-        start = tool_result.find("[")
-        end = tool_result.find("]", start + 1)
-        return tool_result[start + 1 : end] if start >= 0 and end > start else None
+        match = re.search(r"\[tool_result:[^\]]+\]\s+\[([^\]]+)\]", tool_result)
+        return match.group(1) if match else None
 
 
 class OpenAIStyleClient(ModelClient):
@@ -98,4 +98,3 @@ class OpenAIStyleClient(ModelClient):
 
     def last_run_cost(self) -> float:
         return self._cost
-
