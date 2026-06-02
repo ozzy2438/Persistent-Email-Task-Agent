@@ -1,0 +1,23 @@
+[agents]
+max_threads = 6
+max_depth = 1
+
+[agents.model-engineer]
+description = "Owns prompt, tool orchestration, agent loop, and model backend comparison work."
+config_file = "./agents/model-engineer.toml"
+
+[agents.memory-engineer]
+description = "Owns semantic recall, structured task state, Qdrant integration, and retrieval tests."
+config_file = "./agents/memory-engineer.toml"
+
+[agents.structured-output-engineer]
+description = "Owns schemas, JSON validation, repair behavior, and hallucination guardrails."
+config_file = "./agents/structured-output-engineer.toml"
+
+[agents.serving-engineer]
+description = "Owns FastAPI, vLLM serving, Docker, latency, caching, and reliability work."
+config_file = "./agents/serving-engineer.toml"
+
+[agents.eval-engineer]
+description = "Owns eval scenarios, metrics, reports, and CI quality gates."
+config_file = "./agents/eval-engineer.toml"
